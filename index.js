@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 const express = require('express');
-var app = express();
+const app = express();
 const bodyparser = require('body-parser');
 
 app.use(bodyparser.json());
@@ -9,10 +9,10 @@ var mysqlcon = mysql.createConnection({
     host: 'localhost',
     user:'root',
     password:'',
-    database:'glory2a'
+    database:'dbglory'
 });
 
-mysqlcon.connect((er)=> {
+mysqlcon.connect((er)=> {  
     if(!er) {
         console.log('Konek cuk');
     }
