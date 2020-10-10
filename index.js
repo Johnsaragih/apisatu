@@ -9,7 +9,7 @@ var mysqlcon = mysql.createConnection({
     host: 'localhost',
     user:'root',
     password:'',
-    database:'dbglory'
+    database:'glory2a'
 });
 
 mysqlcon.connect((er)=> {  
