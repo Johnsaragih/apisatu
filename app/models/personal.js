@@ -1,9 +1,12 @@
+const personal = require("../routes/personal.js");
 const sql = require("./db.js");
 
 //constructor
 const Personal = function(personal) {
     this.nama = personal.nama;
     this.pid = personal.pid;
+    this.kota = personal.kota;
+    this.agama = personal.agama;
 };
 
 Personal.getAll = result => {
@@ -18,7 +21,7 @@ Personal.getAll = result => {
     });
 };
 Personal.findbyPid = (pid, result) => {
-        sql.query(`SELECT * FROM personal WHERE pid = "${pid}"`,(err,res)=> {
+        sql.query(`SELECT * FROM personal WHERE pid = ?`,pid,(err,res)=> {
         if(err) {
             console.log("error:",err);
             result(err,null);
@@ -33,4 +36,37 @@ Personal.findbyPid = (pid, result) => {
     });
 };
 
+Personal.remove = (pid, result)=> {
+    sql.query("delete from absen where pid = ?", pid, (err,res)=>{
+        if(err) {
+            console.log("error:",err); 
+            result(null, err);
+            return;
+        }
+        if(res.affectedRows ==0) {
+            result({ kind: "not_found"}, null);
+            return;
+        }
+        console.log("delete sukses");
+        result(null, res);
+    });
+};
+
+Personal.updatebyPid = (pid,personal,result)=> {
+    sql.query("update personal set kota =?,agama=? where pid =?",
+    [personal.kota,personal.agama,pid], (err, res)=> {
+        if(err) {
+            console.log("error:", err);
+            result(null, err);
+            return;
+        }
+        if(res.affectedRows==0) {
+            result({kind: "not_found"},null);
+            return;
+        }
+        console.log("update sukses",{pid:pid,...personal});
+        result(null,{pid:pid, ...personal});
+    });    
+    
+};
 module.exports = Personal;

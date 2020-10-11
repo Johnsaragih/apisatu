@@ -29,3 +29,47 @@ exports.findAll = (req, res)=> {
         }
     });
 };
+
+exports.delete = (req,res)=> {
+    Personal.remove(req.params.pid, (err,data)=> {
+        if(err) {
+            if(err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found pid`
+                });
+            } else {
+                res.status(500).send({
+                    message: "Tidak dapat menghapus id"
+                });
+            }
+        } else {
+            res.send({message : `Data sudah dihapus`});
+        }
+    });
+};
+
+exports.update = (req, res)=> {
+    //validate
+    if(!req.body) {
+        res.status(400).send({
+            message: "Content can not empty"
+        });
+    }
+    console.log(req.body);
+
+    Personal.updatebyPid(req.params.pid, new Personal(req.body),(err, data)=> {
+        if(err) {
+            if(err.kind==="not_found") {
+                res.status(404).send({
+                    message: `not found id`
+                });
+            } else {
+                res.status(500).send({
+                    message: "error udpate"
+                });
+            }
+        } else {
+            res.send(data);
+        }    
+    });
+};
