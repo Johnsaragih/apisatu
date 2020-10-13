@@ -73,3 +73,40 @@ exports.update = (req, res)=> {
         }    
     });
 };
+exports.create = (req, res) => {
+    // Validate request
+    if (!req.body) {
+      res.status(400).send({
+        message: "Content can not be empty!"
+      });
+    }
+  
+    // Create a Customer
+    const personal = new Personal({
+     nama: req.body.nama,
+      pid: req.body.pid
+      
+    });
+  
+    // Save database
+    Personal.create(personal, (err, data) => {
+      if (err)
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while save data."
+        });
+      else res.send(data);
+    });
+  };
+
+  exports.deleteAll = (req, res) => {
+    Customer.removeAll((err, data) => {
+      if (err)
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while removing all customers."
+        });
+      else res.send({ message: `All Customers were deleted successfully!` });
+    });
+  };
+  

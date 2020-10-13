@@ -69,4 +69,30 @@ Personal.updatebyPid = (pid,personal,result)=> {
     });    
     
 };
+
+Personal.create = (newPersonal, result) => {
+    sql.query("INSERT INTO personal SET ?", newPersonal, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+  
+      console.log("created customer: ", { id: res.insertId, ...newPersonal });
+      result(null, { id: res.insertId, ...newPersonal });
+    });
+  };
+
+  Personal.removeAll = result => {
+    sql.query("DELETE FROM absen", (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+  
+      console.log(`deleted ${res.affectedRows} personal`);
+      result(null, res);
+    });
+  };
 module.exports = Personal;

@@ -6,5 +6,6 @@ module.exports = app => {
     app.get("/person", personal.findAll);
     app.delete("/person/:pid", personal.delete);
     app.put("/person/:pid",personal.update);    
-    
+    app.post("/person", personal.create);
+    app.delete("/person", personal.deleteAll);
 };
